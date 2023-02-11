@@ -45,7 +45,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 15, nullable: true)]
     private ?string $zipcode = null;
 
-    #[ORM\Column()]
+    #[ORM\Column(options: [
+        'default' => false,
+    ])]
     private ?bool $isDeleted = null;
 
     public function getId(): ?int
