@@ -35,6 +35,13 @@ class Product
     #[ORM\Column]
     private ?bool $isDeleted = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->isDeleted = false;
+        $this->isPublished = false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
