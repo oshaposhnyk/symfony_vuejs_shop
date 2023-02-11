@@ -35,6 +35,9 @@ class Product
     #[ORM\Column]
     private ?bool $isDeleted = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $size = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -127,6 +130,18 @@ class Product
     public function setIsDeleted(bool $isDeleted): self
     {
         $this->isDeleted = $isDeleted;
+
+        return $this;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(?string $size): self
+    {
+        $this->size = $size;
 
         return $this;
     }
