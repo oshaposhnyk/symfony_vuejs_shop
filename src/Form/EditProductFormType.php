@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -70,6 +71,15 @@ class EditProductFormType extends AbstractType
                 ],
                 'label_attr' => [
                     'class' => 'form-check-label',
+                ],
+            ])
+            ->add('newImage', FileType::class, [
+                'label' => 'Chose new image',
+                'mapped' => false,
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-control-file',
+                    'accept' => '.jpeg,.jpg',
                 ],
             ])
             ->add('isDeleted', CheckboxType::class, [
