@@ -86,6 +86,8 @@ class ProductImageManager
         $product = $productImage->getProduct();
         $product->removeProductImage($productImage);
 
+        $this->addFlash('success', 'Success');
+
         $this->entityManager->flush();
     }
 }

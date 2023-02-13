@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Form\EditProductFormType;
 use App\Form\Handler\ProductFormHandler;
 use App\Repository\ProductRepository;
+use App\Utils\Manager\ProductManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +34,8 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $product = $productFormHandler->processEditForm($product, $form);
+            $this->addFlash('success', 'Success');
+
             return $this->redirectToRoute('admin_product_list');
         }
 
@@ -44,10 +47,12 @@ class ProductController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'delete')]
-    public function delete(): Response
+    public function delete(Product $product, ProductManager $productManager): Response
     {
-        return $this->render('admin/product/index.html.twig', [
-            'controller_name' => 'ProductController',
-        ]);
+        $productManager->remove($product);
+
+        $this->addFlash('success', 'Success');
+
+        return $this->redirectToRoute('admin_product_list');
     }
 }
