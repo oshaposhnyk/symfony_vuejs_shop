@@ -10,7 +10,7 @@
             <div class="modal-body">{{ text }}</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" aria-dismiss="modal">Cancel</button>
-                <a href="{{ path('admin_product_delete', {"id" : product.id}) }}" class="btn btn-primary">Delete product</a>
+                <a href="{{ actionUrl }}" class="btn btn-primary">{{ btnText }}</a>
             </div>
         </div>
     </div>

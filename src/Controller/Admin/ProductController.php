@@ -29,6 +29,10 @@ class ProductController extends AbstractController
     #[Route('/add', name: 'add')]
     public function edit(Request $request, ProductFormHandler $productFormHandler, Product $product = null): Response
     {
+        if (!$product) {
+            $product = new Product();
+        }
+
         $form = $this->createForm(EditProductFormType::class, $product);
         $form->handleRequest($request);
 
@@ -38,9 +42,9 @@ class ProductController extends AbstractController
 
             return $this->redirectToRoute('admin_product_list');
         }
-
+        $images = $product->getProductImages() ? $product->getProductImages()->getValues() : [];
         return $this->render('admin/product/edit.html.twig', [
-            'images' => $product->getProductImages(),
+            'images' => $images,
             'form' => $form->createView(),
             'product' => $product,
         ]);
