@@ -40,7 +40,7 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $size = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImage::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImage::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $productImages;
 
     public function __construct()
