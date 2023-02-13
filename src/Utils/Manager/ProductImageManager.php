@@ -7,17 +7,17 @@ use App\Entity\ProductImage;
 use App\Utils\File\ImageResizer;
 use App\Utils\Filesystem\FilesystemWorker;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 
-class ProductImageManager
+class ProductImageManager extends AbstractBaseManager
 {
-    private EntityManagerInterface $entityManager;
     private FilesystemWorker $filesystemWorker;
     private string $uploadsTempDir;
     private ImageResizer $imageResizer;
 
     public function __construct(EntityManagerInterface $entityManager, FilesystemWorker $filesystemWorker, ImageResizer $imageResizer, string $uploadsTempDir)
     {
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager);
         $this->filesystemWorker = $filesystemWorker;
         $this->uploadsTempDir = $uploadsTempDir;
         $this->imageResizer = $imageResizer;
@@ -89,5 +89,10 @@ class ProductImageManager
         $this->addFlash('success', 'Success');
 
         $this->entityManager->flush();
+    }
+
+    public function getRepository(): ObjectRepository
+    {
+        return $this->entityManager->getRepository(ProductImage::class);
     }
 }

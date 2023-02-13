@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Uid\Uuid;
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
@@ -47,12 +48,16 @@ class Product
     #[ORM\Column(length: 128, nullable: true)]
     private ?string $slug = null;
 
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $uuid = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->isDeleted = false;
         $this->isPublished = false;
         $this->productImages = new ArrayCollection();
+        $this->uuid = Uuid::v4();
     }
 
     public function getId(): ?int
@@ -194,6 +199,18 @@ class Product
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getUuid(): ?Uuid
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(Uuid $uuid): self
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }
