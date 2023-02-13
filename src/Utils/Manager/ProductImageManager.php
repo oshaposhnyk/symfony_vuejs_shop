@@ -62,12 +62,30 @@ class ProductImageManager
         $productImage->setFilenameBig($imageBig);
         $productImage->setProduct($product);
         $this->save($productImage);
+
         return $productImage;
     }
 
     public function save(ProductImage $productImage): void
     {
         $this->entityManager->persist($productImage);
+        $this->entityManager->flush();
+    }
+
+    public function removeImageFromProduct(ProductImage $productImage, string $productImageDir): void
+    {
+        $smallFilePath = $productImageDir.'/'.$productImage->getFilenameSmall();
+        $this->filesystemWorker->remove($smallFilePath);
+
+        $middleFilePath = $productImageDir.'/'.$productImage->getFilenameMiddle();
+        $this->filesystemWorker->remove($middleFilePath);
+
+        $bigFilePath = $productImageDir.'/'.$productImage->getFilenameBig();
+        $this->filesystemWorker->remove($bigFilePath);
+
+        $product = $productImage->getProduct();
+        $product->removeProductImage($productImage);
+
         $this->entityManager->flush();
     }
 }
