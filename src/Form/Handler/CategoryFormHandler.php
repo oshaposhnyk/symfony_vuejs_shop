@@ -3,8 +3,9 @@
 namespace App\Form\Handler;
 
 use App\Entity\Category;
+use App\Form\DTO\EditCategoryModel;
 use App\Utils\Manager\CategoryManager;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 
 class CategoryFormHandler
 {
@@ -15,11 +16,14 @@ class CategoryFormHandler
         $this->categoryManager = $categoryManager;
     }
 
-    public function processEditForm(Category $category, Form $form): Category
+    public function processEditForm(EditCategoryModel $editCategoryModel, FormInterface $form): Category
     {
-        $data = $form->getData();
-        $category->setTitle($data->getTitle());
+        $category = new Category();
 
+        if ($editCategoryModel->id) {
+            $category = $this->categoryManager->find($editCategoryModel->id);
+        }
+        $category->setTitle($editCategoryModel->title);
         $this->categoryManager->save($category);
 
         return $category;
