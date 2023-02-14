@@ -42,7 +42,7 @@
                                     {% set image = images[0] %}
                                     <img
                                             src="{{ asset('uploads/images/products/' ~ product.id ~ '/' ~ image.filenameMiddle) }}"
-                                            style="width: 100px"
+                                            style="width: 80px"
                                             alt="{{ image.filenameMiddle }}"
                                     >
                                 {% endif %}
@@ -54,7 +54,9 @@
                                     <i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit
                                 </a>
                                 {% if 'deleted' not in app.request.get('_route') %}
-
+                                    <a href="{{ path('app_product_show', {'uuid': product.uuid}) }}" class="btn btn-sm btn-primary" target="_blank">
+                                        <i class="fa fa-eye" aria-hidden="true"></i> Show
+                                    </a>
                                     <a href="{{ path('admin_product_delete', {'id': product.id}) }}" class="btn btn-sm btn-danger">
                                         <i class="fa fa-trash" aria-hidden="true"></i> Delete
                                     </a>
