@@ -21,7 +21,9 @@ class ProductController extends AbstractController
     public function index(ProductRepository $productRepository): Response
     {
         return $this->render('admin/product/list.html.twig', [
-            'products' => $productRepository->findBy(criteria: ['isDeleted' => false], orderBy: ['id' => 'DESC'], limit: 50),
+            'products' => $productRepository->findBy(
+                criteria: ['isDeleted' => false], orderBy: ['id' => 'DESC'], limit: 50
+            ),
             'pagination' => [],
         ]);
     }

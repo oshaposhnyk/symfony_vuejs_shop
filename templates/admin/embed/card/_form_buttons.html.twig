@@ -1,11 +1,11 @@
 <div class="d-flex justify-content-between align-items-center">
-    <a href="{{ path('admin_product_list') }}" class="btn btn-danger btn-return">
+    <a href="{{ catalogRoute }}" class="btn btn-danger btn-return">
         <i class="fas fa-arrow-circle-left"></i>
     </a>
     <burron class="btn btn-primary" type="submit">
         Save changes
     </burron>
-    {% if product and product.id %}
+    {% if entity and entity.id %}
         <a class="btn btn-info" data-toggle="modal" data-target="#approveDeleteModal">
             <i class="fas fa-times fa-sm"></i>
         </a>
