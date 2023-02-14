@@ -20,6 +20,7 @@
                         <th>Id</th>
                         <th>Title</th>
                         <th>Slug</th>
+                        <th>Products</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -29,11 +30,15 @@
                             <td>{{ category.id }}</td>
                             <td>{{ category.title }}</td>
                             <td>{{ category.slug }}</td>
+                            <td>{{ category.products.count }}</td>
                             <td>
                                 <a href="{{ path('admin_category_edit', {'id': category.id}) }}" class="btn btn-sm btn-info">
                                     <i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit
                                 </a>
                                 {% if 'deleted' not in app.request.get('_route') %}
+                                    <a href="{{ path('app_category_show', {'slug': category.slug}) }}" class="btn btn-sm btn-primary" target="_blank">
+                                        <i class="fa fa-eye" aria-hidden="true"></i> Show
+                                    </a>
                                     <a href="{{ path('admin_category_delete', {'id': category.id}) }}" class="btn btn-sm btn-danger">
                                         <i class="fa fa-trash" aria-hidden="true"></i> Delete
                                     </a>
