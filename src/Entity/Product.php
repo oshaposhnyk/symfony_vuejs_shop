@@ -125,7 +125,7 @@ class Product
         return $this;
     }
 
-    public function isIsPublished(): ?bool
+    public function getIsPublished(): ?bool
     {
         return $this->isPublished;
     }
@@ -137,7 +137,7 @@ class Product
         return $this;
     }
 
-    public function isIsDeleted(): ?bool
+    public function getIsDeleted(): ?bool
     {
         return $this->isDeleted;
     }

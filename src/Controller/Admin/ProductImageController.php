@@ -24,6 +24,8 @@ class ProductImageController extends AbstractController
         $productImageDir = $productManager->getProductImagesDir($product);
         $productImageManager->removeImageFromProduct($productImage, $productImageDir);
 
+        $this->addFlash('success', 'The image was successfully deleted.');
+
         return $this->redirectToRoute('admin_product_edit', [
             'id' => $product->getId(),
         ]);
