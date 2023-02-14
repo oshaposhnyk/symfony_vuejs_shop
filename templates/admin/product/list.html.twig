@@ -7,16 +7,19 @@
         <div class="card-header py-3">
             {% include 'admin/embed/card/_header_action.html.twig' with {
                 'sectionTitle': 'Products',
-                'actionUrl': path('admin_product_add')
+                'addActionUrl': path('admin_product_add'),
+                'listDeleted': path('admin_product_deleted'),
+                'list': path('admin_product_list')
+
             } %}
         </div>
         <div class="card-body">
-            <div class="table-responsive">
+            <div class="table-responsive table-hover">
                 <table class="table table-bordered" id="main_table">
-                    <thead>
+                    <thead class="thead-dark">
                     <tr>
                         <th>Id</th>
-{#                        <th>Category</th>#}
+                        <th>Category</th>
                         <th>Title</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -29,7 +32,7 @@
                     {% for product in products %}
                         <tr>
                             <td>{{ product.id }}</td>
-{#                            <td>{% if product.category %}{{ product.category.title }}{% endif %}</td>#}
+                            <td>{% if product.category %}{{ product.category.title }}{% endif %}</td>
                             <td>{{ product.title }}</td>
                             <td>{{ product.price|format_currency('USD') }}</td>
                             <td>{{ product.quantity }}</td>
@@ -47,8 +50,21 @@
                             <td>
                                 <i class="fas fa-check fa-sm" style="color: {% if product.isPublished %}green{% else %}lightgray{% endif %};"></i></td>
                             <td>
-                                <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="btn btn-outline-info">Edit</a>
-                            </td>
+                                <a href="{{ path('admin_product_edit', {'id': product.id}) }}" class="btn btn-info">
+                                    <i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit
+                                </a>
+                                {% if 'deleted' not in app.request.get('_route') %}
+
+                                    <a href="{{ path('admin_product_delete', {'id': product.id}) }}" class="btn btn-danger">
+                                        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('admin_product_restore', {'id': product.id}) }}" class="btn btn-success">
+                                        <i class="fa fa-heartbeat" aria-hidden="true"></i> Restore
+                                    </a>
+                                {% endif %}
+
+                        </td>
                         </tr>
                     {% endfor %}
                     </tbody>

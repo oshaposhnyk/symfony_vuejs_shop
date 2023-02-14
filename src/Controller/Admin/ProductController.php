@@ -28,6 +28,17 @@ class ProductController extends AbstractController
         ]);
     }
 
+    #[Route('/deleted', name: 'deleted')]
+    public function deleted(ProductRepository $productRepository): Response
+    {
+        return $this->render('admin/product/list.html.twig', [
+            'products' => $productRepository->findBy(
+                criteria: ['isDeleted' => true], orderBy: ['id' => 'DESC'], limit: 50
+            ),
+            'pagination' => [],
+        ]);
+    }
+
     #[Route('/edit/{id}', name: 'edit')]
     #[Route('/add', name: 'add')]
     public function edit(Request $request, ProductFormHandler $productFormHandler, Product $product = null): Response
@@ -59,6 +70,16 @@ class ProductController extends AbstractController
     public function delete(Product $product, ProductManager $productManager): Response
     {
         $productManager->remove($product);
+
+        $this->addFlash('success', 'The product was successfully deleted.');
+
+        return $this->redirectToRoute('admin_product_list');
+    }
+
+    #[Route('/restore/{id}', name: 'restore')]
+    public function restore(Product $product, ProductManager $productManager): Response
+    {
+        $productManager->restore($product);
 
         $this->addFlash('success', 'The product was successfully deleted.');
 

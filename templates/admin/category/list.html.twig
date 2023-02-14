@@ -7,13 +7,15 @@
         <div class="card-header py-3">
             {% include 'admin/embed/card/_header_action.html.twig' with {
                 'sectionTitle': 'Categories',
-                'actionUrl': path('admin_category_add')
+                'addActionUrl': path('admin_category_add'),
+                'listDeleted': path('admin_category_deleted'),
+                'list': path('admin_category_list')
             } %}
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="main_table">
-                    <thead>
+                <table class="table table-bordered table-hover" id="main_table">
+                    <thead class="thead-dark">
                     <tr>
                         <th>Id</th>
                         <th>Title</th>
@@ -28,7 +30,18 @@
                             <td>{{ category.title }}</td>
                             <td>{{ category.slug }}</td>
                             <td>
-                                <a href="{{ path('admin_category_edit', {'id': category.id}) }}" class="btn btn-outline-info">Edit</a>
+                                <a href="{{ path('admin_category_edit', {'id': category.id}) }}" class="btn btn-info">
+                                    <i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit
+                                </a>
+                                {% if 'deleted' not in app.request.get('_route') %}
+                                    <a href="{{ path('admin_category_delete', {'id': category.id}) }}" class="btn btn-danger">
+                                        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('admin_category_restore', {'id': category.id}) }}" class="btn btn-success">
+                                        <i class="fa fa-heartbeat" aria-hidden="true"></i> Restore
+                                    </a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

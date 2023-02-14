@@ -53,4 +53,11 @@ class ProductManager extends AbstractBaseManager
         $this->entityManager->persist($product);
         $this->entityManager->flush();
     }
+
+    public function restore(Product $product): void
+    {
+        $product->setIsDeleted(false);
+        $this->save($product);
+    }
+
 }

@@ -21,7 +21,22 @@ class CategoryController extends AbstractController
     public function index(CategoryRepository $categoryRepository): Response
     {
         return $this->render('admin/category/list.html.twig', [
-            'categories' => $categoryRepository->findAll(),
+            'categories' => $categoryRepository->findBy(
+                criteria: ['isDeleted' => false],
+                orderBy: ['id' => 'DESC']
+            ),
+            'pagination' => [],
+        ]);
+    }
+
+    #[Route('/deleted', name: 'deleted')]
+    public function history(CategoryRepository $categoryRepository): Response
+    {
+        return $this->render('admin/category/list.html.twig', [
+            'categories' => $categoryRepository->findBy(
+                criteria: ['isDeleted' => true],
+                orderBy: ['id' => 'DESC']
+            ),
             'pagination' => [],
         ]);
     }
@@ -54,6 +69,16 @@ class CategoryController extends AbstractController
         $categoryManager->remove($category);
 
         $this->addFlash('success', 'The category was successfully deleted.');
+
+        return $this->redirectToRoute('admin_category_list');
+    }
+
+    #[Route('/restore/{id}', name: 'restore')]
+    public function restore(Category $category, CategoryManager $categoryManager): Response
+    {
+        $categoryManager->restore($category);
+
+        $this->addFlash('success', 'The category was successfully restored.');
 
         return $this->redirectToRoute('admin_category_list');
     }
