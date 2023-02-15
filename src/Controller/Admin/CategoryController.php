@@ -3,9 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
-use App\Form\DTO\EditCategoryModel;
-use App\Form\EditCategoryFormType;
-use App\Form\Handler\CategoryFormHandler;
+use App\Form\Admin\DTO\EditCategoryModel;
+use App\Form\Admin\EditCategoryFormType;
+use App\Form\Admin\Handler\CategoryFormHandler;
 use App\Repository\CategoryRepository;
 use App\Utils\Manager\CategoryManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

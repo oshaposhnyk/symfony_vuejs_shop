@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form\Handler;
+namespace App\Form\Admin\Handler;
 
 use App\Entity\Category;
-use App\Form\DTO\EditCategoryModel;
+use App\Form\Admin\DTO\EditCategoryModel;
 use App\Utils\Manager\CategoryManager;
 use Symfony\Component\Form\FormInterface;
 

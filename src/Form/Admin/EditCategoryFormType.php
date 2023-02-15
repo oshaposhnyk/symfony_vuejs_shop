@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Admin;
 
-use App\Form\DTO\EditCategoryModel;
+use App\Form\Admin\DTO\EditCategoryModel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

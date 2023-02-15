@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\DTO;
+namespace App\Form\Admin\DTO;
 
 use App\Entity\Category;
 use App\Entity\Product;

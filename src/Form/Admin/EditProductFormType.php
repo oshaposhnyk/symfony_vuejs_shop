@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Admin;
 
 use App\Entity\Category;
-use App\Form\DTO\EditProductModel;
+use App\Form\Admin\DTO\EditProductModel;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -95,6 +95,7 @@ class EditProductFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control-file',
                     'accept' => '.jpeg,.jpg,.png',
+                    'multiple' => true,
                 ],
             ])
             ->add('isDeleted', CheckboxType::class, [

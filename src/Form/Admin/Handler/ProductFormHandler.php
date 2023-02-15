@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form\Handler;
+namespace App\Form\Admin\Handler;
 
 use App\Entity\Product;
-use App\Form\DTO\EditProductModel;
+use App\Form\Admin\DTO\EditProductModel;
 use App\Utils\File\FileSaver;
 use App\Utils\Manager\ProductManager;
 use Symfony\Component\Form\Form;
@@ -39,11 +39,11 @@ class ProductFormHandler
         $this->productManager->save($product);
 
         $newImageFile = $form->get('newImage')->getData();
-        $tempIMageFilename = $newImageFile
+        $tempImageFilename = $newImageFile
             ? $this->saveFileUploadedFileIntoTemp($newImageFile)
             : null;
 
-        $this->productManager->updateProductImages($product, $tempIMageFilename);
+        $this->productManager->updateProductImages($product, $tempImageFilename);
 
         return $product;
     }

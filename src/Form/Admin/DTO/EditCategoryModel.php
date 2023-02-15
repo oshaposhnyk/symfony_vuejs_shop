@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Form\DTO;
+namespace App\Form\Admin\DTO;
 
 use App\Entity\Category;
 use Symfony\Component\Validator\Constraints as Assert;
+
 class EditCategoryModel
 {
     public ?int $id = null;
