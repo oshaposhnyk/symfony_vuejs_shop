@@ -15,7 +15,8 @@ class EmbedController extends AbstractController
         if ($categoryId) {
             $params['category'] = $categoryId;
         }
-        $products = $productRepository->findBy(criteria: $params, orderBy: ['id' => 'DESC'], limit: $productCount);
+        $products = $productRepository->findBy(criteria: $params, limit: $productCount);
+
         return $this->render('main/_embed/_last_products.html.twig', [
             'products' => $products,
         ]);
