@@ -43,7 +43,7 @@ class CategoryController extends AbstractController
 
     #[Route('/edit/{id}', name: 'edit')]
     #[Route('/add', name: 'add')]
-    public function edit(Request $request, CategoryFormHandler $categoryFormHandler, Category $category = null)
+    public function edit(Request $request, CategoryFormHandler $categoryFormHandler, Category $category = null): Response
     {
         $editCategoryModal = EditCategoryModel::makeFromCategory($category);
 

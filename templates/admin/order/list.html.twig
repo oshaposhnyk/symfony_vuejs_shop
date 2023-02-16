@@ -1,0 +1,67 @@
+{% extends 'admin/layout/layout_main.html.twig' %}
+
+{% block title_detailed %}All Orders{% endblock %}
+
+{% block body %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            {% include 'admin/embed/card/_header_action.html.twig' with {
+                'sectionTitle': 'Orders',
+                'addActionUrl': path('admin_order_add'),
+                'listDeleted': path('admin_order_deleted'),
+                'list': path('admin_order_list')
+            } %}
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="main_table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>User</th>
+                        <th>Count of products</th>
+                        <th>Total price</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        {% set user = order.getOwner() %}
+                        {% set orderProducts = order.getOrderProducts() %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ user.getFullName() }} ( {{ user.email }} )</td>
+                            <td>{{ orderProducts.count }}</td>
+                            <td>{{ order.totalPrice|format_currency('USD') }}</td>
+                            <td>{{ orderStatusChoices[order.status] }}</td>
+                            <td>{{ order.createdAt|date('H:i:s d/m/y') }}</td>
+                            <td>
+                                <a href="{{ path('admin_order_edit', {'id': order.id}) }}" class="btn btn-sm btn-info">
+                                    <i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit
+                                </a>
+                                {% if 'deleted' not in app.request.get('_route') %}
+{#                                    <a href="{{ path('app_category_show', {'slug': category.slug}) }}" class="btn btn-sm btn-primary" target="_blank">#}
+{#                                        <i class="fa fa-eye" aria-hidden="true"></i> Show#}
+{#                                    </a>#}
+                                    <a href="{{ path('admin_order_delete', {'id': order.id}) }}" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('admin_order_restore', {'id': order.id}) }}" class="btn btn-sm btn-success">
+                                        <i class="fa fa-heartbeat" aria-hidden="true"></i> Restore
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="navigation">
+                {#                {{ knp_pagination_render(pagination) }}#}
+            </div>
+        </div>
+    </div>
+{% endblock %}

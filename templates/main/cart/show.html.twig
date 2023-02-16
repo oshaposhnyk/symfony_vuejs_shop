@@ -73,7 +73,7 @@
                                             Total: <strong>{{ cartPriceTotal|format_currency('EUR') }}</strong>
                                         </div>
 
-                                        <a href="" class="btn btn-success mb-3 text-white">
+                                        <a href="{{ path('app_cart_create') }}" class="btn btn-success mb-3 text-white">
                                             MAKE ORDER
                                         </a>
                                     {% else %}
