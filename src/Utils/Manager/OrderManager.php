@@ -28,6 +28,7 @@ class OrderManager extends AbstractBaseManager
 
     public function save(Order $order): void
     {
+        $order->setUpdatedAt(new \DateTimeImmutable());
         $this->entityManager->persist($order);
         $this->entityManager->flush();
     }
