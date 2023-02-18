@@ -1,0 +1,68 @@
+{% extends 'admin/layout/layout_main.html.twig' %}
+
+{% block title_detailed %}All Categories{% endblock %}
+
+{% block body %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            {% include 'admin/embed/card/_header_action.html.twig' with {
+                'sectionTitle': 'Users',
+                'addActionUrl': path('admin_user_add'),
+                'listDeleted': path('admin_user_deleted'),
+                'list': path('admin_user_list')
+            } %}
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="main_table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Verified</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.fullName }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <i class="fas fa-check fa-sm" style="color: {% if user.verified %}green{% else %}lightgray{% endif %};"></i></td>
+                            <td>
+                            <td>{{ user.phone }}</td>
+                            <td>{{ user.address }}</td>
+                            <td>
+                                <a href="{{ path('admin_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-info">
+                                    <i class="fa fa-pencil-alt" aria-hidden="true"></i> Edit
+                                </a>
+                                {% if 'deleted' not in app.request.get('_route') %}
+{#                                    <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn btn-sm btn-primary" target="_blank">#}
+{#                                        <i class="fa fa-eye" aria-hidden="true"></i> Show#}
+{#                                    </a>#}
+                                    <a href="{{ path('admin_user_delete', {'id': user.id}) }}" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('admin_user_restore', {'id': user.id}) }}" class="btn btn-sm btn-success">
+                                        <i class="fa fa-heartbeat" aria-hidden="true"></i> Restore
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="navigation">
+                {#                {{ knp_pagination_render(pagination) }}#}
+            </div>
+        </div>
+    </div>
+{% endblock %}

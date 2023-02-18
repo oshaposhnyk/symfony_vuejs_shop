@@ -58,6 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->isDeleted = false;
     }
 
     public function getId(): ?int
@@ -70,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
