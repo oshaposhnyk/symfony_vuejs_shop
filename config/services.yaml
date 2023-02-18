@@ -7,6 +7,8 @@ parameters:
     uploads_dir: '%kernel.project_dir%/public/uploads'
     uploads_temp_dir:  '%uploads_dir%/temp'
     uploads_images_dir: '%uploads_dir%/images'
+    env(MONGODB_URL): ''
+    env(MONGODB_DB): ''
     product_images_dir: '%uploads_images_dir%/products'
 services:
     # default configuration for services in *this* file

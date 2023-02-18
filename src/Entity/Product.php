@@ -2,8 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Odm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Odm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
@@ -16,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
+
 
 #[ApiResource(
     operations: [
@@ -33,9 +38,16 @@ use Symfony\Component\Uid\Uuid;
             normalizationContext: ['groups' => ['product:item:write']],
             security: "is_granted('ROLE_ADMIN')"
         ),
-     ]
+     ],
+    formats: ['jsonld', 'json'],
+    order: [
+        'createdAt' => 'DESC',
+    ],
 )]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ApiFilter(BooleanFilter::class, properties: ['isPublished'])]
+#[ApiFilter(DateFilter::class, properties: ['createdAt'])]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
 class Product
 {
     #[ORM\Id]
@@ -57,6 +69,7 @@ class Product
     private ?int $quantity = null;
 
     #[ORM\Column]
+    #[Groups(groups: ['product:list', 'product:item'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -64,6 +77,7 @@ class Product
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
     private ?bool $isPublished = null;
 
     #[ORM\Column]
