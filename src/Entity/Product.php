@@ -2,28 +2,37 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     operations: [
-        new Get(),
+        new Get(
+            normalizationContext: ['groups' => ['product:item']]
+        ),
         new GetCollection(
             normalizationContext: ['groups' => ['product:list']]
         ),
-        new Post(),
-        new Put(),
+        new Post(
+            normalizationContext: ['groups' => ['product:list:write']],
+            security: "is_granted('ROLE_ADMIN')"
+        ),
+        new Patch(
+            normalizationContext: ['groups' => ['product:item:write']],
+            security: "is_granted('ROLE_ADMIN')"
+        ),
      ]
 )]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
@@ -32,23 +41,26 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(groups: 'product:list')]
+    #[ApiProperty(identifier: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(groups: 'product:list')]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
     private ?string $price = null;
 
     #[ORM\Column]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
     private ?int $quantity = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -58,6 +70,7 @@ class Product
     private ?bool $isDeleted = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
     private ?string $size = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImage::class, cascade: ['persist'], orphanRemoval: true)]
@@ -68,10 +81,12 @@ class Product
     private ?string $slug = null;
 
     #[ORM\Column(type: 'uuid')]
-    #[Groups(groups: 'product:list')]
+    #[Groups(groups: ['product:list', 'product:item'])]
+    #[ApiProperty(identifier: true)]
     private ?Uuid $uuid = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
     private ?Category $category = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class, orphanRemoval: true)]

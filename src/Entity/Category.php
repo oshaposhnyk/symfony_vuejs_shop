@@ -2,26 +2,45 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['category:item']]
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['category:list']]
+        ),
+    ]
+)]
 class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(groups: ['category:list', 'category:item', 'product:list', 'product:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(groups: ['category:list', 'category:item', 'product:list', 'product:item'])]
     private ?string $title = null;
 
     #[Gedmo\Slug(fields: ['title'])]
     #[ORM\Column(length: 120, unique: true)]
+    #[Groups(groups: ['category:list', 'category:item', 'product:list', 'product:item'])]
     private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
