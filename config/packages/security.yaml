@@ -58,7 +58,6 @@ security:
         - { path: ^/admin/users, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/, roles: ROLE_ANONYMOUS }
 
 
 when@test:

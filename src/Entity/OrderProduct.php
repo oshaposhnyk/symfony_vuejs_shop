@@ -2,16 +2,38 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\OrderProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OrderProductRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['order_product:item']]
+        ),
+        new Post(),
+        new GetCollection(
+            normalizationContext: ['groups' => ['order_product:list']]
+        ),
+        new Delete(
+            normalizationContext: ['groups' => ['order_product:list']],
+            security: "is_granted('ROLE_ADMIN')"
+        )
+    ]
+)]
 class OrderProduct
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(groups: ['order_product:list'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderProducts')]

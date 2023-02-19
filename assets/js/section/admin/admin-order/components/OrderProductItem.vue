@@ -37,16 +37,21 @@
         default: 0
       }
     },
+    data() {
+      return {
+        localOrderProduct: this.orderProduct
+      }
+    },
     computed: {
       ...mapState("products", ["staticStore"]),
       rowNumber() {
         return this.index + 1;
       },
       productTitle() {
-        return this.orderProduct.product.title
+        return this.localOrderProduct.product.title
       },
       categoryTitle() {
-        return this.orderProduct.product.category.title;
+        return this.localOrderProduct.product.category.title;
       },
       viewDetailsBtnText() {
         return "Details";
@@ -56,11 +61,17 @@
       }
     },
     methods: {
+      ...mapActions("products", ["removeOrderProduct"]),
       viewDetails(event) {
         event.preventDefault();
-        this.$store.dispatch("openProductDetailsWindow", this.orderProduct.product.id);
+        this.$store.dispatch("openProductDetailsWindow", this.localOrderProduct.product.id);
       },
       removeItem(event) {
+        event.preventDefault();
+        this.removeOrderProduct(this.localOrderProduct.id);
+            // .then(() => {
+            //   this.localOrderProduct = {};
+            // });
 
       }
     }
