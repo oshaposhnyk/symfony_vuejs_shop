@@ -11,6 +11,7 @@ use Doctrine\ORM\QueryBuilder;
 
 class FilterProductQueryExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
+    private const IS_DELETED_PARAMETER = 'isDeleted';
 
     public function applyToCollection(
         QueryBuilder $queryBuilder,
@@ -41,6 +42,7 @@ class FilterProductQueryExtension implements QueryCollectionExtensionInterface, 
 
         $rootAlias = $queryBuilder->getRootAlias()[0];
 
-        $queryBuilder->andWhere(sprintf("%s.isDeleted = 'false'", $rootAlias));
+        $queryBuilder->andWhere(sprintf('%s.%s = :%s', $rootAlias, self::IS_DELETED_PARAMETER, self::IS_DELETED_PARAMETER))
+            ->setParameter(self::IS_DELETED_PARAMETER, false);
     }
 }
