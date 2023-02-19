@@ -9,13 +9,13 @@
     <div class="col-md-2">
       {{ categoryTitle }}
     </div>
-    <div class="col-md-2">
+    <div class="col-md-1">
       {{ orderProduct.quantity }}
     </div>
     <div class="col-md-2">
       {{ orderProduct.pricePerOne }}
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3 d-flex justify-content-between">
       <button class="btn btn-info btn-sm" @click="viewDetails">{{ viewDetailsBtnText }}</button>
       <button class="btn btn-danger btn-sm" @click="removeItem">{{ removeItemBtnText }}</button>
     </div>
