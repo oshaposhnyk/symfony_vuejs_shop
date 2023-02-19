@@ -107,7 +107,6 @@
             {{ form_end(form) }}
         </div>
     </div>
-
     {% if order and order.id %}
         {% include 'admin/embed/utils/_modal.html.twig' with {
             'id': 'approveDeleteModal',
@@ -120,5 +119,10 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+        window.staticStore = {};
+        window.staticStore.orderProducts = {{ orderProducts|json_encode|raw }};
+        window.staticStore.orderId = {{ order ? order.id : ''}};
+    </script>
     {{ encore_entry_script_tags('appAdminOrder') }}
 {% endblock %}

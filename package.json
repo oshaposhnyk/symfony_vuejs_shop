@@ -31,6 +31,7 @@
         "popper.js": "1.14.7",
         "vue": "3.2.13",
         "vue-loader": "^16.8.3",
-        "vue-template-compiler": "2.6.12"
+        "vue-template-compiler": "2.6.12",
+        "vuex": "^4.1.0"
     }
 }
