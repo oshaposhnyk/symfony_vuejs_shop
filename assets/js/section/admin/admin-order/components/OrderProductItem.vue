@@ -16,13 +16,15 @@
       {{ orderProduct.pricePerOne }}
     </div>
     <div class="col-md-2">
-      <button class="btn btn-info btn-sm">Details</button>
-      <button class="btn btn-danger btn-sm">Remove</button>
+      <button class="btn btn-info btn-sm" @click="viewDetails">{{ viewDetailsBtnText }}</button>
+      <button class="btn btn-danger btn-sm" @click="removeItem">{{ removeItemBtnText }}</button>
     </div>
   </div>
 </template>
 
 <script>
+  import {mapState, mapActions} from "vuex";
+
   export default {
     name: "OrderProductItem",
     props: {
@@ -36,6 +38,7 @@
       }
     },
     computed: {
+      ...mapState("products", ["staticStore"]),
       rowNumber() {
         return this.index + 1;
       },
@@ -44,6 +47,21 @@
       },
       categoryTitle() {
         return this.orderProduct.product.category.title;
+      },
+      viewDetailsBtnText() {
+        return "Details";
+      },
+      removeItemBtnText() {
+        return "Remove";
+      }
+    },
+    methods: {
+      viewDetails(event) {
+        event.preventDefault();
+        this.$store.dispatch("openProductDetailsWindow", this.orderProduct.product.id);
+      },
+      removeItem(event) {
+
       }
     }
   }

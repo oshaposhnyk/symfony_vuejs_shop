@@ -2,7 +2,11 @@ const state = {
     categories: [],
     staticStore: {
         orderIs: window.staticStore.orderId,
-        orderProducts: window.staticStore.orderProducts
+        orderProducts: window.staticStore.orderProducts,
+
+        url: {
+            view: window.staticStore.productViewUrl
+        }
     }
 };
 

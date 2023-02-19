@@ -122,7 +122,8 @@
     <script>
         window.staticStore = {};
         window.staticStore.orderProducts = {{ orderProducts|json_encode|raw }};
-        window.staticStore.orderId = {{ order ? order.id : ''}};
+        window.staticStore.orderId = '{{ order ? order.id : ''}}';
+        window.staticStore.productViewUrl = '{{ path('admin_product_edit_blank') }}';
     </script>
     {{ encore_entry_script_tags('appAdminOrder') }}
 {% endblock %}

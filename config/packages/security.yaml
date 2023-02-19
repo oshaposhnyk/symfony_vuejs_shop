@@ -28,7 +28,7 @@ security:
             custom_authenticator: App\Security\Authenticator\Admin\LoginFormAuthenticator
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 60400
+                lifetime: 2592000
                 path: /admin
             logout:
                 path: app_admin_logout
@@ -38,7 +38,7 @@ security:
             custom_authenticator: App\Security\Authenticator\Front\LoginFormAuthenticator
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 60400
+                lifetime: 2592000
                 path: /
             logout:
                 path: app_logout
@@ -58,6 +58,8 @@ security:
         - { path: ^/admin/users, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/, roles: ROLE_ANONYMOUS }
+
 
 when@test:
     security:
