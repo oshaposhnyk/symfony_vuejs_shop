@@ -5,6 +5,7 @@
         v-model="form.categoryId"
         name="add_product_category_select"
         class="form-control"
+        @change="getProducts()"
       >
         <option value="" disabled>- choose options -</option>
         <option
@@ -21,6 +22,11 @@
           class="form-control"
       >
         <option value="" disabled>- choose options -</option>
+        <option
+            v-for="product in categoryProducts"
+            :key="product.id"
+            :value="product.id"
+        >{{ productTitle(product) }}</option>
       </select>
     </div>
     <div class="col-md-2">
@@ -50,7 +56,8 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
+import {getProductInformativeTitle} from "../utils/title-formatter";
 
 export default {
   name: "OrderProductAdd",
@@ -65,7 +72,18 @@ export default {
     };
   },
   computed: {
-    ...mapState("products", ["categories"])
+    ...mapState("products", ["categories", "categoryProducts"])
+  },
+  methods: {
+    ...mapMutations("products", ["setNewProductInfo"]),
+    ...mapActions("products", ["getProductsByCategory"]),
+    productTitle(product) {
+      return getProductInformativeTitle(product);
+    },
+    getProducts() {
+      this.setNewProductInfo(this.form);
+      this.getProductsByCategory();
+    }
   }
 }
 </script>
