@@ -33,7 +33,7 @@ class OrderProduct
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(groups: ['order_product:list'])]
+    #[Groups(groups: ['order_product:list', 'order:item'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'orderProducts')]
@@ -45,9 +45,11 @@ class OrderProduct
     private ?Product $product = null;
 
     #[ORM\Column]
+    #[Groups(groups: ['order_product:list', 'order:item'])]
     private ?int $quantity = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
+    #[Groups(groups: ['order_product:list', 'order:item'])]
     private ?string $pricePerOne = null;
 
     public function getId(): ?int

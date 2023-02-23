@@ -1,25 +1,15 @@
 <template>
-  <div class="row mb-1">
-    <div class="col-mb-1 text-center">
-      {{ rowNumber }}
-    </div>
-    <div class="col-md-3">
-      {{ productTitle }}
-    </div>
-    <div class="col-md-2">
-      {{ categoryTitle }}
-    </div>
-    <div class="col-md-1">
-      {{ orderProduct.quantity }}
-    </div>
-    <div class="col-md-2">
-      {{ orderProduct.pricePerOne }}
-    </div>
-    <div class="col-md-3 d-flex justify-content-between">
-      <button class="btn btn-info btn-sm" @click="viewDetails">{{ viewDetailsBtnText }}</button>
-      <button class="btn btn-danger btn-sm" @click="removeItem">{{ removeItemBtnText }}</button>
-    </div>
-  </div>
+  <tr>
+    <td>{{ rowNumber }}</td>
+    <td>{{ productTitle }}</td>
+    <td>{{ categoryTitle }}</td>
+    <td>{{ orderProduct.quantity }}</td>
+    <td>{{ orderProduct.pricePerOne }}</td>
+    <td class="d-flex justify-space-between">
+      <v-btn color="info" small @click="viewDetails">{{ viewDetailsBtnText }}</v-btn>
+      <v-btn color="error" small @click="removeItem">{{ removeItemBtnText }}</v-btn>
+    </td>
+  </tr>
 </template>
 
 <script>

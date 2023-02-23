@@ -54,19 +54,19 @@ class Product
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[ApiProperty(identifier: false)]
-    #[Groups(groups: ['product:list', 'product:item'])]
+    #[Groups(groups: ['product:list', 'product:item', 'order:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write', 'order:item'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write', 'order:item'])]
     private ?string $price = null;
 
     #[ORM\Column]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write', 'order:item'])]
     private ?int $quantity = null;
 
     #[ORM\Column]

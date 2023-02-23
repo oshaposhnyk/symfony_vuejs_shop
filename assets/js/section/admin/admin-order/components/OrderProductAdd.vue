@@ -1,72 +1,69 @@
 <template>
-  <div>
-    <div class="row mb-2">
-      <div class="col-md-2">
-        <select
-          v-model="form.categoryId"
-          name="add_product_category_select"
-          class="form-control"
-          @change="getProducts()"
-        >
-          <option value="" disabled>- choose options -</option>
-          <option
-            v-for="category in categories"
-            :key="category.id"
-            :value="category.id"
-          >{{ category.title }}</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <select
+  <v-container>
+    <flash-message ref="FlashMessage" />
+    <v-row align="center" class="mb-2">
+      <v-col cols="12" md="2">
+        <v-select
+            v-model="form.categoryId"
+            name="add_product_category_select"
+            label="Category"
+            :items="categories"
+            item-text="title"
+            item-value="id"
+            clearable
+        />
+      </v-col>
+      <v-col cols="12" md="3">
+        <v-select
             v-model="form.productId"
             v-if="form.categoryId"
             name="add_product_product_select"
-            class="form-control"
-        >
-          <option value="" disabled>- choose options -</option>
-          <option
-              v-for="product in categoryProducts"
-              :key="product.id"
-              :value="product.uuid"
-          >{{ productTitle(product) }}</option>
-        </select>
-      </div>
-      <div class="col-md-2">
-        <input
+            label="Product"
+            :items="categoryProducts"
+            item-text="title"
+            item-value="uuid"
+            clearable
+        />
+      </v-col>
+      <v-col cols="12" md="2">
+        <v-text-field
             v-model="form.quantity"
             type="number"
-            class="form-control"
+            label="Quantity"
             placeholder="quantity"
             min="1"
             v-if="form.productId"
         />
-      </div>
-      <div class="col-md-2">
-        <input
+      </v-col>
+      <v-col cols="12" md="2">
+        <v-text-field
             v-model="form.pricePerOne"
             type="number"
-            class="form-control"
-            step="0.01"
+            label="Price per one"
             placeholder="price per one"
             min="0"
+            step="0.01"
             v-if="form.productId"
         />
-      </div>
-      <div class="col-md-2 d-flex justify-content-between">
-        <button
-            class="btn btn-info btn-sm details"
+      </v-col>
+      <v-col cols="12" md="3" class="d-flex justify-space-between">
+        <v-btn
+            class="details"
             v-if="form.productId"
             @click="viewDetails"
-        >Details</button>
-        <button
-            class="btn btn-success btn-sm add"
+            color="info"
+            small
+        >Details</v-btn>
+        <v-btn
+            class="add"
             v-if="form.productId && form.categoryId && form.pricePerOne && form.quantity"
             @click="submit"
-        >Add</button>
-      </div>
-    </div>
-    <flash-message :message="flashMessage" />
-  </div>
+            color="success"
+            small
+        >Add</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -87,8 +84,12 @@ export default {
         quantity: "",
         pricePerOne: ""
       },
-      flashMessage: null
     };
+  },
+  watch: {
+    'form.categoryId': function() {
+      this.getProducts();
+    }
   },
   computed: {
     ...mapState("products", ["categories", "categoryProducts"])
@@ -100,6 +101,7 @@ export default {
       return getProductInformativeTitle(product);
     },
     getProducts() {
+      console.log(this.form)
       this.setNewProductInfo(this.form);
       this.getProductsByCategory();
     },
@@ -112,16 +114,21 @@ export default {
       this.setNewProductInfo(this.form);
       this.addNewOrderProduct();
       this.resetFormData();
-      this.flashMessage = { type: 'success', text: 'Product added successfully.' };
-      this.clearFlashMessage();
+      this.openSnackbar();
     },
     resetFormData() {
       Object.assign(this.$data, this.$options.data.apply(this));
     },
-    clearFlashMessage() {
-      setTimeout(() => {
-        this.flashMessage = null;
-      }, 3000); // 3000 мілісекунд = 3 секунди
+    openSnackbar() {
+      this.$refs.FlashMessage.showSnackbar({
+        text: "Це флеш повідомлення",
+        color: "success",
+        timeout: 5000,
+        actionText: "Закрити",
+        action: () => {
+          this.$refs.FlashMessage.snackbar.show = false;
+        },
+      });
     }
   }
 }

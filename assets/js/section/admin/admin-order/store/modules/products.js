@@ -30,6 +30,9 @@ const getters = {
 };
 
 const actions = {
+    getOrderProducts({commit, state}) {
+
+    },
     async getProductsByCategory({commit, state}) {
         //https://localhost:8000/api/products?page=1&itemsPerPage=30&isPublished=true&category=1
         const url = getUrlProductsByCategory(
