@@ -101,7 +101,7 @@ class Product
     private ?Uuid $uuid = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
+    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write', 'order:item'])]
     private ?Category $category = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class, orphanRemoval: true)]

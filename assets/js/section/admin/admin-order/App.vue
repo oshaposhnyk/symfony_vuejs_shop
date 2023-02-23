@@ -26,15 +26,16 @@ export default {
   components: {OrderProductAdd, OrderProductItem},
   created() {
     this.getCategories();
+    this.getOrderProducts();
   },
   computed: {
     ...mapState({
-        orderProducts: state => state.products.staticStore.orderProducts,
+        orderProducts: state => state.products.orderProducts
     }),
     productsCount: () => 123
   },
   methods: {
-    ...mapActions("products", ["getCategories"]),
+    ...mapActions("products", ["getCategories", "getOrderProducts"]),
   }
 }
 </script>

@@ -125,6 +125,7 @@
         window.staticStore.orderId = '{{ order ? order.id : ''}}';
         window.staticStore.urlViewProduct = '{{ path('admin_product_edit_blank') }}';
         window.staticStore.urlApiOrderProduct = '{{ path('_api_/order_products{._format}_get_collection') }}';
+        window.staticStore.urlApiOrder = '{{ path('_api_/orders{._format}_get_collection') }}';
         window.staticStore.urlApiCategory = '{{ path('_api_/categories{._format}_get_collection') }}';
         window.staticStore.urlApiProducts = '{{ path('_api_/products{._format}_get_collection') }}';
     </script>

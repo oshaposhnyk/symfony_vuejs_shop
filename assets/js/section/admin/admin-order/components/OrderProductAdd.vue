@@ -121,10 +121,10 @@ export default {
     },
     openSnackbar() {
       this.$refs.FlashMessage.showSnackbar({
-        text: "Це флеш повідомлення",
+        text: "Success",
         color: "success",
         timeout: 5000,
-        actionText: "Закрити",
+        actionText: "Close",
         action: () => {
           this.$refs.FlashMessage.snackbar.show = false;
         },

@@ -6,6 +6,7 @@ import  {HEADERS} from '../../utils/config';
 const state = {
     categories: [],
     categoryProducts: [],
+    orderProducts: [],
     newOrderProduct: {
         categoryId: "",
         productId: "",
@@ -20,7 +21,8 @@ const state = {
             view: window.staticStore.urlViewProduct,
             apiOrderProduct: window.staticStore.urlApiOrderProduct,
             apiCategory: window.staticStore.urlApiCategory,
-            apiProduct: window.staticStore.urlApiProducts
+            apiProduct: window.staticStore.urlApiProducts,
+            apiOrder: window.staticStore.urlApiOrder
         }
     },
     viewProductCountLimit: 30
@@ -30,8 +32,23 @@ const getters = {
 };
 
 const actions = {
-    getOrderProducts({commit, state}) {
+    async getOrderProducts({commit, state}) {
+        const url = concatUrlByParams(
+            state.staticStore.url.apiOrder,
+             state.staticStore.orderId
+        );
 
+        try {
+            const response = await axios.get(url, {
+                headers: HEADERS
+            });
+            if (response.data && response.status === StatusCodes.OK) {
+                console.log(response.data.orderProducts)
+                commit('setOrderProducts', response.data.orderProducts);
+            }
+        } catch (error) {
+            console.error(`Error: ${error.message}`);
+        }
     },
     async getProductsByCategory({commit, state}) {
         //https://localhost:8000/api/products?page=1&itemsPerPage=30&isPublished=true&category=1
@@ -72,7 +89,7 @@ const actions = {
                 headers: HEADERS
             });
             if (response.status === StatusCodes.NO_CONTENT) {
-                console.log('Deleted successfully');
+                dispatch('getOrderProducts');
             }
         } catch (error) {
             console.error(`Failed to remove product from order: ${error.message}`);
@@ -92,7 +109,7 @@ const actions = {
                 headers: HEADERS
             });
             if (response.status === StatusCodes.CREATED) {
-                console.log('Created successfully');
+                dispatch('getOrderProducts');
             }
         } catch (error) {
             console.error(`Failed to create product from order: ${error.message}`);
@@ -113,6 +130,9 @@ const mutations = {
     },
     setCategoryProducts(state, categoryProducts) {
         state.categoryProducts = categoryProducts;
+    },
+    setOrderProducts(state, orderProducts) {
+        state.orderProducts = orderProducts;
     }
 };
 
