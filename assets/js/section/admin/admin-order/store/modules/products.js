@@ -13,7 +13,7 @@ const state = {
         pricePerOne: ""
     },
     staticStore: {
-        orderIs: window.staticStore.orderId,
+        orderId: window.staticStore.orderId,
         orderProducts: window.staticStore.orderProducts,
 
         url: {
@@ -74,6 +74,27 @@ const actions = {
         } catch (error) {
             console.error(`Failed to remove product from order: ${error.message}`);
         }
+    },
+    async addNewOrderProduct({state, dispatch}) {
+        const url = state.staticStore.url.apiOrderProduct;
+        const data = {
+            pricePerOne: ""+ state.newOrderProduct.pricePerOne,
+            quantity: parseInt(state.newOrderProduct.quantity),
+            product: "/api/products/" + state.newOrderProduct.productId,
+            appOrder: "/api/orders/" + state.staticStore.orderId
+        };
+
+        try {
+            const response = await axios.post(url, data, {
+                headers: HEADERS
+            });
+            if (response.status === StatusCodes.CREATED) {
+                console.log('Created successfully');
+            }
+        } catch (error) {
+            console.error(`Failed to create product from order: ${error.message}`);
+        }
+
     }
 };
 

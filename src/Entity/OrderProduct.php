@@ -36,7 +36,7 @@ class OrderProduct
     #[Groups(groups: ['order_product:list'])]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orderProducts')]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'orderProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $appOrder = null;
 
