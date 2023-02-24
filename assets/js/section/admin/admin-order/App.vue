@@ -15,15 +15,18 @@
       <OrderProductItem v-for="(orderProduct, index) in orderProducts" :key="orderProduct.id" :order-product="orderProduct" :index="index" />
     </tbody>
   </v-table>
+  <hr>
+  <total-price-block />
 </template>
 
 <script>
 import {mapActions, mapState} from "vuex";
 import OrderProductItem from "./components/OrderProductItem.vue";
 import OrderProductAdd from "./components/OrderProductAdd.vue";
+import TotalPriceBlock from "./components/TotalPriceBlock.vue";
 
 export default {
-  components: {OrderProductAdd, OrderProductItem},
+  components: {TotalPriceBlock, OrderProductAdd, OrderProductItem},
   created() {
     this.getCategories();
     this.getOrderProducts();

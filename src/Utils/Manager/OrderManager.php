@@ -76,4 +76,16 @@ class OrderManager extends AbstractBaseManager
 
         $this->cartManager->remove($cart);
     }
+
+    public function recalOrderTotalPrice(Order $order)
+    {
+        $totalPrice = 0;
+
+        /** @var OrderProduct $orderProduct */
+        foreach ($order->getOrderProducts()->getValues() as $orderProduct) {
+            $totalPrice += $orderProduct->getQuantity() * $orderProduct->getPricePerOne();
+        }
+
+        $order->setTotalPrice($totalPrice);
+    }
 }
