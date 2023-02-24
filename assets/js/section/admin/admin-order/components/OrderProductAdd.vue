@@ -19,7 +19,7 @@
             v-if="form.categoryId"
             name="add_product_product_select"
             label="Product"
-            :items="categoryProducts"
+            :items="freeCategoryProducts"
             item-text="title"
             item-value="uuid"
             clearable
@@ -33,6 +33,7 @@
             placeholder="quantity"
             min="1"
             v-if="form.productId"
+            :max="productQuantityMax"
         />
       </v-col>
       <v-col cols="12" md="2">
@@ -41,9 +42,10 @@
             type="number"
             label="Price per one"
             placeholder="price per one"
-            min="0"
+            min="1"
             step="0.01"
             v-if="form.productId"
+            :max="productPriceMax"
         />
       </v-col>
       <v-col cols="12" md="3" class="d-flex justify-space-between">
@@ -92,20 +94,28 @@ export default {
     }
   },
   computed: {
+    ...mapGetters("products", ["freeCategoryProducts"]),
     ...mapState("products", ["categories", "categoryProducts"]),
-    // freeCategoryProducts () {
-    //   return this.$store.getters.freeCategoryProducts
-    // }
+    productQuantityMax() {
+      const productData = this.freeCategoryProducts.find(
+          product => product.uuid === this.form.productId
+      );
+      return parseInt(productData.quantity)
+    },
+    productPriceMax() {
+      const productData = this.freeCategoryProducts.find(
+          product => product.uuid === this.form.productId
+      );
+      return parseFloat(productData.price)
+    }
   },
   methods: {
     ...mapMutations("products", ["setNewProductInfo"]),
     ...mapActions("products", ["getProductsByCategory", "addNewOrderProduct"]),
-    ...mapGetters("products", ["freeCategoryProducts"]),
     productTitle(product) {
       return getProductInformativeTitle(product);
     },
     getProducts() {
-      console.log(this.form)
       this.setNewProductInfo(this.form);
       this.getProductsByCategory();
     },

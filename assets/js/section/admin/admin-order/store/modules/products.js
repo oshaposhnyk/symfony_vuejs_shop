@@ -34,8 +34,6 @@ const getters = {
         return state.categoryProducts.filter(
             item => state.busyProductsIds.indexOf(item.id) === -1
         );
-
-
     }
 };
 
