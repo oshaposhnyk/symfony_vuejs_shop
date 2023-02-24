@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import {mapActions, mapMutations, mapState} from "vuex";
+import {mapActions, mapMutations, mapState, mapGetters} from "vuex";
 import {getProductInformativeTitle} from "../utils/title-formatter";
 import FlashMessage from "./FlashMessage.vue";
 
@@ -92,11 +92,15 @@ export default {
     }
   },
   computed: {
-    ...mapState("products", ["categories", "categoryProducts"])
+    ...mapState("products", ["categories", "categoryProducts"]),
+    // freeCategoryProducts () {
+    //   return this.$store.getters.freeCategoryProducts
+    // }
   },
   methods: {
     ...mapMutations("products", ["setNewProductInfo"]),
     ...mapActions("products", ["getProductsByCategory", "addNewOrderProduct"]),
+    ...mapGetters("products", ["freeCategoryProducts"]),
     productTitle(product) {
       return getProductInformativeTitle(product);
     },

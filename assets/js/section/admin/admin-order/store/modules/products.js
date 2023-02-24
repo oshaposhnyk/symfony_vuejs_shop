@@ -7,6 +7,7 @@ const state = {
     categories: [],
     categoryProducts: [],
     orderProducts: [],
+    busyProductsIds: [],
     newOrderProduct: {
         categoryId: "",
         productId: "",
@@ -29,6 +30,13 @@ const state = {
 };
 
 const getters = {
+    freeCategoryProducts(state) {
+        return state.categoryProducts.filter(
+            item => state.busyProductsIds.indexOf(item.id) === -1
+        );
+
+
+    }
 };
 
 const actions = {
@@ -45,6 +53,7 @@ const actions = {
             if (response.data && response.status === StatusCodes.OK) {
                 console.log(response.data.orderProducts)
                 commit('setOrderProducts', response.data.orderProducts);
+                commit('setBusyProductsIds');
             }
         } catch (error) {
             console.error(`Error: ${error.message}`);
@@ -133,6 +142,9 @@ const mutations = {
     },
     setOrderProducts(state, orderProducts) {
         state.orderProducts = orderProducts;
+    },
+    setBusyProductsIds(state) {
+        state.busyProductsIds = state.orderProducts.map(item => item.product.id);
     }
 };
 

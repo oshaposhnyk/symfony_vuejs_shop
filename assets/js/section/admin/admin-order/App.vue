@@ -41,5 +41,7 @@ export default {
 </script>
 
 <style scoped>
-
+  thead {
+    background-color: #eee; /* або будь-який інший сірий колір */
+  }
 </style>
