@@ -37,6 +37,7 @@
           class="form-control"
           min="1"
           step="1"
+          @focusout="updateQuantity(cartProduct.id, quantity)"
       >
     </td>
     <td class="total-col">
@@ -63,6 +64,9 @@ export default {
       quantity: 1,
     }
   },
+  created() {
+    this.quantity = this.cartProduct.quantity;
+  },
   name: "CardProductItem",
   props: {
     cartProduct: {
@@ -88,7 +92,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("cart", ["removeCartProduct"]),
+    ...mapActions("cart", ["removeCartProduct", "updateCartProductQuantity"]),
     getUrlProductImage(productImage) {
       return (
           this.staticStore.url.assetImageProducts +
@@ -97,6 +101,9 @@ export default {
               "/" +
               productImage.filenameSmall
       );
+    },
+    updateQuantity(cartProductId, quantity) {
+      this.updateCartProductQuantity({cartProductId, quantity});
     }
   }
 }

@@ -10,6 +10,7 @@
         <th>Title</th>
         <th>Price</th>
         <th>Quantity</th>
+        <th>Total</th>
         <th>Actions</th>
       </tr>
       </thead>

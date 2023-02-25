@@ -1,6 +1,16 @@
 const HEADERS = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    headers: {
+
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
 };
 
-export { HEADERS };
+const HEADERS_PATCH = {
+    headers: {
+        'Content-Type': 'application/merge-patch+json',
+        'Accept': 'application/json'
+    }
+};
+
+export { HEADERS, HEADERS_PATCH };
