@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-lg-12 order-block">
-      <div class="order-conten">
+      <div class="order-content">
         <div v-if="showCartContent">
           <cart-product-list />
           <cart-total-price />
@@ -15,16 +15,21 @@
 <script>
 import CartProductList from "./components/CartProductList.vue";
 import CartTotalPrice from "./components/CartTotalPrice.vue";
+import {mapActions, mapState} from "vuex";
 
 export default {
   name: "App",
+  created() {
+    this.getCart();
+  },
   components: {CartTotalPrice, CartProductList},
   computed: {
     showCartContent() {
       return true;
-    }
+    },
   },
   methods: {
+    ...mapActions("cart", ["getCart"]),
     makeOrder() {
       console.log('Make order');
     }

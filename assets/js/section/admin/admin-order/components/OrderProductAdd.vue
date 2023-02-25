@@ -52,14 +52,14 @@
         <v-btn
             class="details"
             v-if="form.productId"
-            @click="viewDetails"
+            @click.prevent="viewDetails"
             color="info"
             small
         >Details</v-btn>
         <v-btn
             class="add"
             v-if="form.productId && form.categoryId && form.pricePerOne && form.quantity"
-            @click="submit"
+            @click.prevent="submit"
             color="success"
             small
         >Add</v-btn>
@@ -119,12 +119,10 @@ export default {
       this.setNewProductInfo(this.form);
       this.getProductsByCategory();
     },
-    viewDetails(event) {
-      event.preventDefault();
+    viewDetails() {
       this.$store.dispatch("openProductDetailsWindow", this.form.productId);
     },
-    submit(event) {
-      event.preventDefault();
+    submit() {
       this.setNewProductInfo(this.form);
       this.addNewOrderProduct();
       this.resetFormData();

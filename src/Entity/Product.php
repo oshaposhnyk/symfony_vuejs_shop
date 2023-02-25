@@ -39,7 +39,7 @@ use Symfony\Component\Uid\Uuid;
             security: "is_granted('ROLE_ADMIN')"
         ),
      ],
-    formats: ['jsonld', 'json'],
+    formats: ['json'],
     order: [
         'createdAt' => 'DESC',
     ],
@@ -54,19 +54,39 @@ class Product
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[ApiProperty(identifier: false)]
-    #[Groups(groups: ['product:list', 'product:item', 'order:item'])]
+    #[Groups(groups: [
+        'product:list', 'product:item',
+        'order:item',
+        'cart:list', 'cart:item',
+        'cart_product:list', 'cart_product:item'
+    ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write', 'order:item'])]
+    #[Groups(groups: [
+        'product:list', 'product:list:write', 'product:item', 'product:item:write',
+        'order:item',
+        'cart:list', 'cart:item',
+        'cart_product:list', 'cart_product:item'
+    ])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 6, scale: 2)]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write', 'order:item'])]
+    #[Groups(groups: [
+        'product:list', 'product:list:write', 'product:item', 'product:item:write',
+        'order:item',
+        'cart:list', 'cart:item',
+        'cart_product:list', 'cart_product:item'
+    ])]
     private ?string $price = null;
 
     #[ORM\Column]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write', 'order:item'])]
+    #[Groups(groups: [
+        'product:list', 'product:list:write', 'product:item', 'product:item:write',
+        'order:item',
+        'cart:list', 'cart:item',
+        'cart_product:list', 'cart_product:item'
+    ])]
     private ?int $quantity = null;
 
     #[ORM\Column]
@@ -74,21 +94,39 @@ class Product
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
+    #[Groups(groups: [
+        'product:list', 'product:list:write', 'product:item', 'product:item:write',
+        'cart:list', 'cart:item',
+        'cart_product:list', 'cart_product:item'
+    ])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
+    #[Groups(groups: [
+        'product:list', 'product:list:write', 'product:item', 'product:item:write',
+        'cart:list', 'cart:item',
+        'cart_product:list', 'cart_product:item'
+    ])]
     private ?bool $isPublished = null;
 
     #[ORM\Column]
     private ?bool $isDeleted = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write'])]
+    #[Groups(groups: [
+        'product:list', 'product:list:write', 'product:item', 'product:item:write',
+        'cart:list', 'cart:item',
+        'cart_product:list', 'cart_product:item'
+    ])]
     private ?string $size = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImage::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Groups(groups: [
+        'product:list', 'product:list:write', 'product:item', 'product:item:write',
+        'order:item',
+        'cart:list', 'cart:item',
+        'cart_product:list', 'cart_product:item'
+    ])]
     private Collection $productImages;
 
     #[Gedmo\Slug(fields: ['title'])]
@@ -101,7 +139,11 @@ class Product
     private ?Uuid $uuid = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    #[Groups(groups: ['product:list', 'product:list:write', 'product:item', 'product:item:write', 'order:item'])]
+    #[Groups(groups: [
+        'product:list', 'product:list:write', 'product:item', 'product:item:write',
+        'order:item',
+        'cart_product:list', 'cart_product:item'
+    ])]
     private ?Category $category = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: CartProduct::class, orphanRemoval: true)]

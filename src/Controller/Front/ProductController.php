@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     #[Route('/{uuid}', name: 'show')]
+    #[Route('/', name: 'show_blank')]
     public function index(Request $request, Product $product): Response
     {
         if (!$product) {

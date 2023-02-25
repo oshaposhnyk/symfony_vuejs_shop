@@ -6,8 +6,8 @@
     <td>{{ orderProduct.quantity }}</td>
     <td>{{ orderProduct.pricePerOne }}</td>
     <td class="d-flex justify-space-between">
-      <v-btn color="info" small @click="viewDetails">{{ viewDetailsBtnText }}</v-btn>
-      <v-btn color="error" small @click="removeItem">{{ removeItemBtnText }}</v-btn>
+      <v-btn color="info" small @click.prevent="viewDetails">{{ viewDetailsBtnText }}</v-btn>
+      <v-btn color="error" small @click.prevent="removeItem">{{ removeItemBtnText }}</v-btn>
     </td>
   </tr>
 </template>
@@ -52,12 +52,10 @@
     },
     methods: {
       ...mapActions("products", ["removeOrderProduct"]),
-      viewDetails(event) {
-        event.preventDefault();
+      viewDetails() {
         this.$store.dispatch("openProductDetailsWindow", this.localOrderProduct.product.id);
       },
-      removeItem(event) {
-        event.preventDefault();
+      removeItem() {
         this.removeOrderProduct(this.localOrderProduct.id);
             // .then(() => {
             //   this.localOrderProduct = {};
