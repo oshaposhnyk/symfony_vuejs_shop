@@ -28,9 +28,10 @@
 <script>
 import {mapState} from "vuex";
 import CardProductItem from "./CardProductItem.vue";
+import CartTotalPrice from "./CartTotalPrice.vue";
 
 export default {
-  components: {CardProductItem},
+  components: {CartTotalPrice, CardProductItem},
   data() {
     return {
       cartProducts: [],

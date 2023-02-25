@@ -5,6 +5,10 @@ import {concatUrlByParams} from "../../utils/url-generator";
 
 const state = {
     cart: {},
+    alert: {
+        type: null,
+        message: null,
+    },
     staticStore: {
         url: {
             apiCart: window.staticStore.urlCart,
@@ -16,6 +20,18 @@ const state = {
 };
 
 const getters = {
+    totalPrice(state, ) {
+        let result = 0;
+        if (!state.cart.cartProducts) {
+            return 0;
+        }
+        state.cart.cartProducts.forEach(
+            cartProduct => {
+                return result += cartProduct.product.price * cartProduct.quantity
+            }
+        )
+        return result.toFixed(2);
+    }
 };
 
 const actions = {
@@ -24,15 +40,16 @@ const actions = {
 
         try {
             const response = await axios.get(url, HEADERS);
-
             if (response.data && response.status === StatusCodes.OK) {
                 commit('setCart', response.data[0]);
             }
         } catch (error) {
             console.error(`Error: ${error.message}`);
+            commit('setAlert', {type: 'warning', message: error.message})
+
         }
     },
-    async removeCartProduct({state, dispatch}, cartProductId) {
+    async removeCartProduct({state, dispatch, commit}, cartProductId) {
         const url = concatUrlByParams(
             state.staticStore.url.apiCartProduct,
             cartProductId
@@ -43,14 +60,14 @@ const actions = {
 
             if (response.status === StatusCodes.NO_CONTENT) {
                 dispatch("getCart");
+                commit('setAlert', {type: 'success', message: 'OK'})
             }
         } catch (error) {
             console.error(`Error: ${error.message}`);
+            commit('setAlert', {type: 'warning', message: error.message})
         }
     },
-    async updateCartProductQuantity({state, dispatch}, payload ) {
-
-        console.log(payload)
+    async updateCartProductQuantity({state, dispatch, commit}, payload ) {
 
         const url = concatUrlByParams(
             state.staticStore.url.apiCartProduct,
@@ -71,6 +88,7 @@ const actions = {
             }
         } catch (error) {
             console.error(`Error: ${error.message}`);
+            commit('setAlert', {type: 'warning', message: error.message})
         }
     }
 };
@@ -78,6 +96,18 @@ const actions = {
 const mutations = {
     setCart(state, cart) {
         state.cart = cart;
+    },
+    cleanAlert(state) {
+        state.alert = {
+            type: null,
+            message: null
+        };
+    },
+    setAlert(state, model) {
+        state.alert = {
+            type: model.type,
+            message: model.message,
+        };
     }
 };
 
