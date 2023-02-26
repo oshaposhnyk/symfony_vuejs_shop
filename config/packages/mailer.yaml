@@ -1,3 +1,5 @@
 framework:
     mailer:
+        headers:
+            from: 'Test <test@mail.com>'
         dsn: '%env(MAILER_DSN)%'

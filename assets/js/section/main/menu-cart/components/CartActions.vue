@@ -8,6 +8,7 @@
     >View cart</v-btn>
     <v-btn
         class="details mt-2"
+        v-if="!isEmptyCart"
         @click.prevent="clearCart"
         color="info"
         small
@@ -21,14 +22,17 @@ import {mapState, mapActions} from "vuex";
 export default {
   name: "CartActions",
   computed: {
-    ...mapState("cart", ["staticStore"])
+    ...mapState("cart", ["staticStore", "cart"]),
+    isEmptyCart() {
+      return !(this.cart && this.cart.cartProducts && this.cart.cartProducts.length);
+    }
   },
   methods: {
     ...mapActions("cart", ["clearCart"]),
     viewCart() {
       const url = this.staticStore.url.urlCart;
       window.open(url, '_blank');
-    }
+    },
   }
 }
 </script>
