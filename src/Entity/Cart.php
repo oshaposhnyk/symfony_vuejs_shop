@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
@@ -21,6 +22,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(),
         new GetCollection(
             normalizationContext: ['groups' => ['cart:list']]
+        ),
+        new Delete(
+            normalizationContext: ['groups' => ['cart:item']]
         ),
     ]
 )]

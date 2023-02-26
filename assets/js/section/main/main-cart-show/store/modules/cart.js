@@ -5,6 +5,7 @@ import {concatUrlByParams} from "../../utils/url-generator";
 
 const state = {
     cart: {},
+    isSentForm: false,
     alert: {
         type: null,
         message: null,
@@ -13,6 +14,7 @@ const state = {
         url: {
             apiCart: window.staticStore.urlCart,
             apiCartProduct: window.staticStore.urlCartProduct,
+            apiOrder: window.staticStore.urlOrder,
             viewProduct: window.staticStore.urlViewProduct,
             assetImageProducts: window.staticStore.urlAssetImageProducts
         }
@@ -40,8 +42,29 @@ const actions = {
 
         try {
             const response = await axios.get(url, HEADERS);
-            if (response.data && response.status === StatusCodes.OK) {
+            if (
+                response.data &&
+                response.data.length &&
+                response.status === StatusCodes.OK
+            ) {
                 commit('setCart', response.data[0]);
+            }
+        } catch (error) {
+            console.error(`Error: ${error.message}`);
+            commit('setAlert', {type: 'warning', message: error.message})
+
+        }
+    },
+    async clearCart({state, commit}) {
+        const url = concatUrlByParams(
+            state.staticStore.url.apiCart,
+            state.cart.id
+        );
+
+        try {
+            const response = await axios.delete(url, HEADERS);
+            if (response.status === StatusCodes.NO_CONTENT) {
+                commit('setCart', {});
             }
         } catch (error) {
             console.error(`Error: ${error.message}`);
@@ -78,8 +101,6 @@ const actions = {
             quantity: payload.quantity
         };
 
-        console.log(HEADERS_PATCH);
-
         try {
             const response = await axios.patch(url, data, HEADERS_PATCH);
 
@@ -89,6 +110,23 @@ const actions = {
         } catch (error) {
             console.error(`Error: ${error.message}`);
             commit('setAlert', {type: 'warning', message: error.message})
+        }
+    },
+    async makeOrder({state, commit, dispatch}) {
+        const url = state.staticStore.url.apiOrder;
+        const data = {
+            cartId: state.cart.id
+        };
+
+        const result = await axios.post(url, data, HEADERS);
+
+        if(result.data && result.status === StatusCodes.CREATED) {
+            commit('setAlert', {
+                type: 'success',
+                message: 'Thank you for your purchase!'
+            });
+            commit('setIsSentForm', true);
+            dispatch('clearCart');
         }
     }
 };
@@ -108,6 +146,9 @@ const mutations = {
             type: model.type,
             message: model.message,
         };
+    },
+    setIsSentForm(state, value) {
+        state.isSentForm = value;
     }
 };
 

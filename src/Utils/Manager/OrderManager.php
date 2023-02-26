@@ -39,7 +39,7 @@ class OrderManager extends AbstractBaseManager
         $this->save($order);
     }
 
-    public function createOrderFromCartBySessionId(string $sessionId, User $user)
+    public function createOrderFromCartBySessionId(string $sessionId, User $user): void
     {
         $cart = $this->cartManager->getRepository()->findOneBy(criteria: ['sessionId' => $sessionId]);
         if ($cart) {
@@ -47,28 +47,35 @@ class OrderManager extends AbstractBaseManager
         }
     }
 
-    public function createOrderFromCart(Cart $cart, User $user)
+    public function addOrderProductsFromCart(Order $order, int $cartId): void
+    {
+        /** @var Cart $cart */
+        $cart = $this->cartManager->getRepository()->findOneBy(criteria: ['id' => $cartId]);
+
+        if ($cart) {
+            foreach ($cart->getCartProducts() as $cartProduct) {
+                $product = $cartProduct->getProduct();
+
+                $orderProduct = new OrderProduct();
+                $orderProduct->setAppOrder($order);
+                $orderProduct->setQuantity($cartProduct->getQuantity());
+                $orderProduct->setPricePerOne($product->getPrice());
+                $orderProduct->setProduct($cartProduct->getProduct());
+
+                $order->addOrderProduct($orderProduct);
+                $this->entityManager->persist($orderProduct);
+            }
+        }
+    }
+
+    public function createOrderFromCart(Cart $cart, User $user): void
     {
         $order = new Order();
         $order->setOwner($user);
         $order->setStatus(OrderStaticStorage::ORDER_STATUS_CREATED);
-        $totalPrice = 0;
 
-        /** @var CartProduct $cartProduct */
-        foreach ($cart->getCartProducts() as $cartProduct) {
-            $product = $cartProduct->getProduct();
-
-            $orderProduct = new OrderProduct();
-            $orderProduct->setAppOrder($order);
-            $orderProduct->setQuantity($cartProduct->getQuantity());
-            $orderProduct->setPricePerOne($product->getPrice());
-            $orderProduct->setProduct($cartProduct->getProduct());
-            $totalPrice += $orderProduct->getQuantity() * $product->getPrice();
-
-            $order->addOrderProduct($orderProduct);
-            $this->entityManager->persist($orderProduct);
-        }
-        $order->setTotalPrice($totalPrice);
+        $this->addOrderProductsFromCart($order, $cart->getId());
+        $this->recalOrderTotalPrice($order);
         $order->setUpdatedAt(new \DateTimeImmutable());
 
         $this->entityManager->persist($order);
@@ -77,7 +84,7 @@ class OrderManager extends AbstractBaseManager
         $this->cartManager->remove($cart);
     }
 
-    public function recalOrderTotalPrice(Order $order)
+    public function recalOrderTotalPrice(Order $order): void
     {
         $totalPrice = 0;
 

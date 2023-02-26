@@ -2,7 +2,7 @@
   <div>
     <v-table
         fixed-header
-        height="500px"
+        max-height="500px"
     >
       <thead>
       <tr>

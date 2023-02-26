@@ -8,6 +8,9 @@
           <cart-total-price />
           <v-btn color="success" small @click="makeOrder"> Make order</v-btn>
         </div>
+        <div v-else>
+          <p>Empty cart.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -26,15 +29,13 @@ export default {
   },
   components: {CartTotalPrice, CartProductList, Alert},
   computed: {
+    ...mapState("cart", ["isSentForm", "cart"]),
     showCartContent() {
-      return true;
+      return !this.isSentForm && Object.keys(this.cart).length;
     },
   },
   methods: {
-    ...mapActions("cart", ["getCart"]),
-    makeOrder() {
-      console.log('Make order');
-    }
+    ...mapActions("cart", ["getCart", "makeOrder"]),
   }
 }
 </script>
