@@ -8,7 +8,7 @@
     >View cart</v-btn>
     <v-btn
         class="details mt-2"
-        @click.prevent=""
+        @click.prevent="clearCart"
         color="info"
         small
     >Checkout</v-btn>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapState, mapActions} from "vuex";
 
 export default {
   name: "CartActions",
@@ -24,6 +24,7 @@ export default {
     ...mapState("cart", ["staticStore"])
   },
   methods: {
+    ...mapActions("cart", ["clearCart"]),
     viewCart() {
       const url = this.staticStore.url.urlCart;
       window.open(url, '_blank');
