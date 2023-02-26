@@ -103,3 +103,11 @@
     </div>
     {{ render(controller('App\\Controller\\Front\\EmbedController::showLastProducts' )) }}
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        function addProductToCart(uuid) {
+            window.vueMenuCartInstance.addCartProduct({uuid, quantity: 1});
+        }
+    </script>
+{% endblock %}
