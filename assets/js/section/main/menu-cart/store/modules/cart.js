@@ -96,12 +96,16 @@ const actions = {
         }
     },
     addCartProduct({state, dispatch, commit}, productData) {
+        console.log(productData);
         const existCartProduct = state.cart.cartProducts.find(
             cartProduct => cartProduct.product.uuid === productData.uuid
         );
 
         if (existCartProduct) {
-            dispatch("addExistCartProduct", existCartProduct);
+            dispatch("addExistCartProduct", {
+                cartProductId: existCartProduct.id,
+                quantity: existCartProduct.quantity + productData.quantity
+            });
         } else {
             dispatch("addNewCartProduct", productData);
         }
@@ -112,7 +116,7 @@ const actions = {
         const data = {
             cart: '/api/carts/' + state.cart.id,
             product: '/api/products/' + productData.uuid,
-            quantity: 1
+            quantity: productData.quantity
         };
 
         try {
@@ -128,14 +132,14 @@ const actions = {
 
 
     },
-    async addExistCartProduct({state, dispatch, commit}, existCartProduct) {
+    async addExistCartProduct({state, dispatch, commit}, cartProductData) {
         const url = concatUrlByParams(
             state.staticStore.url.apiCartProduct,
-            existCartProduct.id
+            cartProductData.cartProductId
         );
 
         const data = {
-            quantity: existCartProduct.quantity + 1
+            quantity: cartProductData.quantity
         };
 
         try {

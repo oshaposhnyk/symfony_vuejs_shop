@@ -60,7 +60,7 @@
 {% block javascripts %}
     <script>
         function addProductToCart(uuid) {
-            window.vueMenuCartInstance.addCartProduct({uuid});
+            window.vueMenuCartInstance.addCartProduct({uuid, quantity: 1});
         }
     </script>
 {% endblock %}
