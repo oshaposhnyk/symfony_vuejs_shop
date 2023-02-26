@@ -3,6 +3,8 @@ twig:
     paths:
         '%kernel.project_dir%/templates/main' : main
         '%kernel.project_dir%/templates/admin' : admin
+        'assets/images' : images
+        'public' : public
 
 when@test:
     twig:
