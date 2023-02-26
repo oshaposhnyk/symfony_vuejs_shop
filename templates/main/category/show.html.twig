@@ -58,13 +58,9 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        const url = '{{ path('app_cart_api_save') }}';
         function addProductToCart(uuid) {
-            const formData = new FormData();
-            formData.append('productId', uuid)
-            axios.post(url, formData);
+            window.vueMenuCartInstance.addCartProduct({uuid});
         }
     </script>
 {% endblock %}

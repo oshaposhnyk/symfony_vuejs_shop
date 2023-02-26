@@ -37,7 +37,7 @@ const getters = {
 };
 
 const actions = {
-    async getCart({state, commit}) {
+    async getCart({state, commit, dispatch}) {
         const url = state.staticStore.url.apiCart;
 
         try {
@@ -128,7 +128,7 @@ const actions = {
             commit('setIsSentForm', true);
             dispatch('clearCart');
         }
-    }
+    },
 };
 
 const mutations = {

@@ -37,7 +37,7 @@ const getters = {
 };
 
 const actions = {
-    async getCart({state, commit}) {
+    async getCart({state, commit, dispatch}) {
         const url = state.staticStore.url.apiCart;
 
         try {
@@ -48,14 +48,17 @@ const actions = {
                 response.status === StatusCodes.OK
             ) {
                 commit('setCart', response.data[0]);
+            } else {
+                dispatch("createCart");
             }
+
         } catch (error) {
             console.error(`Error: ${error.message}`);
             commit('setAlert', {type: 'warning', message: error.message})
 
         }
     },
-    async clearCart({state, commit}) {
+    async clearCart({state, commit, dispatch}) {
         const url = concatUrlByParams(
             state.staticStore.url.apiCart,
             state.cart.id
@@ -65,6 +68,8 @@ const actions = {
             const response = await axios.delete(url, HEADERS);
             if (response.status === StatusCodes.NO_CONTENT) {
                 commit('setCart', {});
+                dispatch('createCart');
+
             }
         } catch (error) {
             console.error(`Error: ${error.message}`);
@@ -90,6 +95,76 @@ const actions = {
             commit('setAlert', {type: 'warning', message: error.message})
         }
     },
+    addCartProduct({state, dispatch, commit}, productData) {
+        const existCartProduct = state.cart.cartProducts.find(
+            cartProduct => cartProduct.product.uuid === productData.uuid
+        );
+
+        if (existCartProduct) {
+            dispatch("addExistCartProduct", existCartProduct);
+        } else {
+            dispatch("addNewCartProduct", productData);
+        }
+        console.log(state.cart.cartProducts, productData);
+    },
+    async addNewCartProduct({state, dispatch, commit}, productData) {
+        const url = state.staticStore.url.apiCartProduct;
+        const data = {
+            cart: '/api/carts/' + state.cart.id,
+            product: '/api/products/' + productData.uuid,
+            quantity: 1
+        };
+
+        try {
+            const response = await axios.post(url, data, HEADERS);
+            if (response.data && response.status === StatusCodes.CREATED) {
+                dispatch('getCart');
+            }
+        } catch (error) {
+            console.error(`Error: ${error.message}`);
+            commit('setAlert', {type: 'warning', message: error.message})
+
+        }
+
+
+    },
+    async addExistCartProduct({state, dispatch, commit}, existCartProduct) {
+        const url = concatUrlByParams(
+            state.staticStore.url.apiCartProduct,
+            existCartProduct.id
+        );
+
+        const data = {
+            quantity: existCartProduct.quantity + 1
+        };
+
+        try {
+            const response = await axios.patch(url, data, HEADERS_PATCH);
+
+            if (response.status === StatusCodes.OK) {
+                dispatch("getCart");
+            }
+        } catch (error) {
+            console.error(`Error: ${error.message}`);
+            commit('setAlert', {type: 'warning', message: error.message})
+        }
+
+
+    },
+    async createCart({state, commit, dispatch}) {
+        const url = state.staticStore.url.apiCart;
+        const data = {};
+
+        const result = await axios.post(url, data, HEADERS);
+        console.log(result);
+
+
+        if(result.data && result.status === StatusCodes.CREATED) {
+            dispatch("getCart");
+        }
+    }
+
+
 };
 
 const mutations = {

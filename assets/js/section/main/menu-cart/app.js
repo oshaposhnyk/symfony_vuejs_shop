@@ -8,14 +8,18 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-const app = createApp(App);
+const vueMenuCartInstance = createApp(App);
 const vuetify = createVuetify({
     components,
     directives,
 })
 
 
-app.use(vuetify);
-app.use(store);
+vueMenuCartInstance.use(vuetify);
+vueMenuCartInstance.use(store);
 
-app.mount('#appMainMenuCart');
+vueMenuCartInstance.mount('#appMainMenuCart');
+
+window.vueMenuCartInstance = {};
+window.vueMenuCartInstance.addCartProduct =
+    (productData) => store.dispatch('cart/addCartProduct', productData);
