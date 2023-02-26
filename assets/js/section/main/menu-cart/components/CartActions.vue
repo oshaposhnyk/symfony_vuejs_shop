@@ -2,7 +2,7 @@
   <div class="actions">
     <v-btn
         class="add"
-        @click.prevent=""
+        @click.prevent="viewCart"
         color="success"
         small
     >View cart</v-btn>
@@ -16,8 +16,19 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
-  name: "CartActions"
+  name: "CartActions",
+  computed: {
+    ...mapState("cart", ["staticStore"])
+  },
+  methods: {
+    viewCart() {
+      const url = this.staticStore.url.urlCart;
+      window.open(url, '_blank');
+    }
+  }
 }
 </script>
 

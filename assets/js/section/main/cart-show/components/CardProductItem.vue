@@ -72,6 +72,9 @@ export default {
     cartProduct: {
       type: Object,
       required: true,
+      validator: function(obj) {
+        return (obj.id && obj.product);
+      }
     },
     key: {
       type: Number,

@@ -134,7 +134,7 @@ class Product
     private ?string $slug = null;
 
     #[ORM\Column(type: 'uuid')]
-    #[Groups(groups: ['product:list', 'product:item'])]
+    #[Groups(groups: ['product:list', 'product:item', 'cart:list'])]
     #[ApiProperty(identifier: true)]
     private ?Uuid $uuid = null;
 
